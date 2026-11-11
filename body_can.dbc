@@ -1,0 +1,66 @@
+VERSION "0.1.0"
+
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	BA_DEF_DEF_
+
+BS_:
+
+BU_: GW BCM Tester
+
+
+BO_ 256 GW_BodyCmd: 8 GW
+ SG_ E2E_CRC : 0|8@1+ (1,0) [0|255] "" BCM
+ SG_ E2E_Counter : 8|4@1+ (1,0) [0|14] "" BCM
+ SG_ TurnLightReq : 12|2@1+ (1,0) [0|3] "" BCM
+ SG_ WindowTarget : 16|7@1+ (1,0) [0|100] "%" BCM
+ SG_ CabinTemp : 24|8@1+ (1,-40) [-40|215] "degC" BCM
+
+BO_ 512 BCM_Status: 8 BCM
+ SG_ E2E_CRC : 0|8@1+ (1,0) [0|255] "" GW
+ SG_ E2E_Counter : 8|4@1+ (1,0) [0|14] "" GW
+ SG_ TurnLightState : 12|2@1+ (1,0) [0|3] "" GW
+ SG_ WindowPos : 16|7@1+ (1,0) [0|100] "%" GW
+ SG_ WindowState : 23|2@1+ (1,0) [0|2] "" GW
+ SG_ DtcActive : 25|1@1+ (1,0) [0|1] "" GW
+ SG_ SwVersion : 32|16@1+ (1,0) [0|65535] "" GW
+
+BO_ 513 BCM_Event: 8 BCM
+ SG_ E2E_CRC : 0|8@1+ (1,0) [0|255] "" GW
+ SG_ E2E_Counter : 8|4@1+ (1,0) [0|14] "" GW
+ SG_ KeyId : 12|2@1+ (1,0) [0|3] "" GW
+ SG_ KeyAction : 14|2@1+ (1,0) [0|3] "" GW
+
+BO_ 2016 Diag_Req_Phys: 8 Tester
+
+BO_ 2015 Diag_Req_Func: 8 Tester
+
+BO_ 2024 Diag_Resp: 8 BCM
+
+
+CM_ BO_ 256 "Body command from gateway (PC during A0-A3). 100 ms cycle, plus one immediate frame on change.";
+CM_ BO_ 512 "BCM status, 100 ms cycle.";
+CM_ BO_ 513 "BCM key event, event-triggered, min interval 20 ms.";
+CM_ BO_ 2016 "UDS physical request, ISO-TP payload.";
+CM_ BO_ 2015 "UDS functional request, ISO-TP single frame only.";
+CM_ BO_ 2024 "UDS response, ISO-TP payload.";
+CM_ SG_ 256 E2E_CRC "CRC8 SAE J1850 over DataID (CAN ID low byte) then bytes 1..7.";
+CM_ SG_ 256 E2E_Counter "Alive counter 0..14, wraps to 0.";
+CM_ SG_ 256 CabinTemp "From gateway AHT20 sensor.";
+
+BA_DEF_ BO_ "GenMsgCycleTime" INT 0 65535;
+BA_DEF_ BO_ "GenMsgMinInterval" INT 0 65535;
+BA_DEF_DEF_ "GenMsgCycleTime" 0;
+BA_DEF_DEF_ "GenMsgMinInterval" 0;
+BA_ "GenMsgCycleTime" BO_ 256 100;
+BA_ "GenMsgCycleTime" BO_ 512 100;
+BA_ "GenMsgMinInterval" BO_ 513 20;
+
+VAL_ 256 TurnLightReq 0 "Off" 1 "Left" 2 "Right" 3 "Hazard" ;
+VAL_ 512 TurnLightState 0 "Off" 1 "Left" 2 "Right" 3 "Hazard" ;
+VAL_ 512 WindowState 0 "Stop" 1 "Up" 2 "Down" ;
