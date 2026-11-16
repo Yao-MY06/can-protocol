@@ -1,4 +1,4 @@
-VERSION "0.1.0"
+VERSION "0.2.0"
 
 
 NS_ :
@@ -49,7 +49,10 @@ CM_ BO_ 513 "BCM key event, event-triggered, min interval 20 ms.";
 CM_ BO_ 2016 "UDS physical request, ISO-TP payload.";
 CM_ BO_ 2015 "UDS functional request, ISO-TP single frame only.";
 CM_ BO_ 2024 "UDS response, ISO-TP payload.";
-CM_ SG_ 256 E2E_CRC "CRC8 SAE J1850 over DataID (CAN ID low byte) then bytes 1..7.";
+CM_ SG_ 256 E2E_CRC "CRC8 SAE J1850 over DataID = full 11-bit CAN ID as 2 bytes (low byte, high byte), then bytes 1..7.";
+CM_ SG_ 512 E2E_CRC "CRC8 SAE J1850, same rule as 0x100; DataID 0x0200.";
+CM_ SG_ 513 E2E_CRC "CRC8 SAE J1850, same rule as 0x100; DataID 0x0201.";
+CM_ SG_ 513 KeyAction "Long press threshold 800 ms.";
 CM_ SG_ 256 E2E_Counter "Alive counter 0..14, wraps to 0.";
 CM_ SG_ 256 CabinTemp "From gateway AHT20 sensor.";
 
@@ -64,3 +67,5 @@ BA_ "GenMsgMinInterval" BO_ 513 20;
 VAL_ 256 TurnLightReq 0 "Off" 1 "Left" 2 "Right" 3 "Hazard" ;
 VAL_ 512 TurnLightState 0 "Off" 1 "Left" 2 "Right" 3 "Hazard" ;
 VAL_ 512 WindowState 0 "Stop" 1 "Up" 2 "Down" ;
+VAL_ 513 KeyId 0 "Key1" 1 "Key2" ;
+VAL_ 513 KeyAction 1 "ShortPress" 2 "LongPress" ;

@@ -22,9 +22,6 @@
 | `BCM_Event` | 0x201 | BCM | 事件触发，最小间隔 20 ms |
 | `Diag_Req_Phys` / `Diag_Req_Func` / `Diag_Resp` | 0x7E0 / 0x7DF / 0x7E8 | 诊断仪 / BCM | ISO-TP，不定义信号 |
 
-E2E：字节 0 是 CRC8（SAE J1850：多项式 0x1D，初值 0xFF，结果异或 0xFF），计算顺序为 DataID（CAN ID 低字节）在前，再接字节 1 ~ 7；字节 1 低 4 位是计数器，0 ~ 14 循环。
+E2E：字节 0 是 CRC8（SAE J1850：多项式 0x1D，初值 0xFF，结果异或 0xFF）。数据 ID = 完整 11 位报文 ID 的两个字节（0x100 → 0x0100），CRC 输入顺序为数据 ID 低字节、高字节，再字节 1 ~ 7（项目 A 需求说明 v1.2 FR-COM-03）。字节 1 低 4 位是计数器，0 ~ 14 循环。
 
-## 待定
-
-- `BCM_Event.KeyId`、`KeyAction` 的取值表（A1 四件套定）。
-- 0x100 与 0x200 的 ID 低字节都是 0x00，DataID 区分不开两条报文（已在进度日志提给系统会话）。
+按键编码（`BCM_Event`）：`KeyId` 0 = 按键 1，1 = 按键 2（2 ~ 3 保留）；`KeyAction` 1 = 短按，2 = 长按（0 / 3 保留；长按阈值 800 ms）。
